@@ -33,7 +33,7 @@ try {
       stringBuilder.AppendLine(" --order ： Print tree with folder then file order. <Default is false>");
       stringBuilder.AppendLine(" --show-hidden ： Print tree with folder then file order. <Default is false>");
 
-      Console.WriteLine(stringBuilder.ToString());
+      Console.Write(stringBuilder.ToString());
       return;
     }
   }
@@ -42,12 +42,4 @@ try {
   tree.Print();
 } catch(UnauthorizedAccessException ex) {
   Console.WriteLine(ex.Message);
-}
-
-class TreeOptions
-{
-  public bool IsShowIcon { get; set; } = true;
-  public int Depth { get; set; } = 2;
-  public bool ShowHidden{ get; set; }  = false;
-  public bool IsOrder{ get; set; } = false;
 }
