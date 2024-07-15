@@ -8,20 +8,20 @@ int deepLevel = 3;
 void Tree(List<string> entries, string indent, int level) {
   if (deepLevel == level) return;
   
-  for (var i = 0; i < entries.Count(); i++) {
-    var entry = entries[i];
-    bool isLastEntry = i == entries.Count - 1;
+  var filteredEntries = entries.Where(e => !IsHidden(e)).ToList();
+  
+  int count = filteredEntries.Count;
+  
+  for (var i = 0; i < count; i++) {
+    var entry = filteredEntries[i];
+    bool isLastEntry = i == filteredEntries.Count - 1;
 
     if (IsDirectory(entry)) {
       var directory = new DirectoryInfo(entry);
-      if ((directory.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
-
       Console.WriteLine(indent +(isLastEntry ? "└─" : "├─") + directory.Name);
       Tree(Directory.EnumerateFileSystemEntries(entry).ToList(), indent + (isLastEntry ? "    " : "│   "), level + 1);
     } else {
       var file = new FileInfo(entry);
-      if ((file.Attributes  & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
-
       Console.WriteLine(indent + (isLastEntry ? "└─" : "├─") + file.Name);
     }
   }
@@ -30,6 +30,13 @@ void Tree(List<string> entries, string indent, int level) {
 bool IsDirectory(string path) 
 {
   return Directory.Exists(path);
+}
+
+bool IsHidden(string path) 
+{
+  var attributes = File.GetAttributes(path);
+  
+  return (attributes & FileAttributes.Hidden) == FileAttributes.Hidden;
 }
 
 try { 
