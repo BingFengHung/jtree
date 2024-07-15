@@ -9,7 +9,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/joe/bin/Debug/net8.0/jtree.dll",
+      "program": "${workspaceFolder}/src/jtree/bin/Debug/net8.0/jtree.dll",
       "args": [],
       "console": "integratedTerminal", 
       "cwd": "${workspaceFolder}",
