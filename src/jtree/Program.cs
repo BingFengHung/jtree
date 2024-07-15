@@ -24,10 +24,12 @@ void Print(List<string> entries, string indent, int level) {
   var finalEntry = entries[entries.Count() - 1];
     if (IsDirectory(finalEntry)) {
       var directory = new DirectoryInfo(finalEntry);
+      if ((directory.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) return;
       Console.WriteLine(indent + "└─" + directory.Name);
       Print(Directory.EnumerateFileSystemEntries(finalEntry).ToList(), indent + "   ", level + 1);
     } else {
       var file = new FileInfo(finalEntry);
+      if ((file.Attributes  & FileAttributes.Hidden) == FileAttributes.Hidden) return;
       Console.WriteLine(indent + "└─" + file.Name);
     }
     
