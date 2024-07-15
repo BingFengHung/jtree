@@ -1,4 +1,6 @@
-﻿var root =  Environment.CurrentDirectory;
+﻿using System.Text;
+
+var root =  Environment.CurrentDirectory;
 ArgumentParser parser = new ArgumentParser();
 var isOk = parser.Parser(args, out List<Option> options);
 
@@ -22,6 +24,17 @@ try {
     } else if (option.Name == "--order")
     {
       treeOption.IsOrder = true;
+    } else if (option.Name == "--help") {
+      StringBuilder stringBuilder = new StringBuilder();
+      
+      stringBuilder.AppendLine("jtree Print full folder tree structure.");
+      stringBuilder.AppendLine(" --depth [n] : Print tree with deep. <Default is 2>");
+      stringBuilder.AppendLine(" --no-icon ： Print tree without folder and structure icon. <Default is true>");
+      stringBuilder.AppendLine(" --order ： Print tree with folder then file order. <Default is false>");
+      stringBuilder.AppendLine(" --show-hidden ： Print tree with folder then file order. <Default is false>");
+
+      Console.WriteLine(stringBuilder.ToString());
+      return;
     }
   }
   
