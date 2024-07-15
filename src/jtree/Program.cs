@@ -4,35 +4,27 @@ var root =  Environment.CurrentDirectory;
 var entries =  Directory.EnumerateFileSystemEntries(root).ToList();
 
 int deepLevel = 3;
-void Print(List<string> entries, string indent, int level) {
+
+void Tree(List<string> entries, string indent, int level) {
   if (deepLevel == level) return;
   
-  for (var i = 0; i < entries.Count() - 1; i++) {
+  for (var i = 0; i < entries.Count(); i++) {
     var entry = entries[i];
+    bool isLastEntry = i == entries.Count - 1;
+
     if (IsDirectory(entry)) {
       var directory = new DirectoryInfo(entry);
       if ((directory.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
-      Console.WriteLine(indent + "├─" + directory.Name);
-      Print(Directory.EnumerateFileSystemEntries(entry).ToList(), indent + "│   ", level + 1);
+
+      Console.WriteLine(indent +(isLastEntry ? "└─" : "├─") + directory.Name);
+      Tree(Directory.EnumerateFileSystemEntries(entry).ToList(), indent + (isLastEntry ? "    " : "│   "), level + 1);
     } else {
       var file = new FileInfo(entry);
       if ((file.Attributes  & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
-      Console.WriteLine(indent + "├─" + file.Name);
+
+      Console.WriteLine(indent + (isLastEntry ? "└─" : "├─") + file.Name);
     }
   }
-  
-  var finalEntry = entries[entries.Count() - 1];
-    if (IsDirectory(finalEntry)) {
-      var directory = new DirectoryInfo(finalEntry);
-      if ((directory.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) return;
-      Console.WriteLine(indent + "└─" + directory.Name);
-      Print(Directory.EnumerateFileSystemEntries(finalEntry).ToList(), indent + "   ", level + 1);
-    } else {
-      var file = new FileInfo(finalEntry);
-      if ((file.Attributes  & FileAttributes.Hidden) == FileAttributes.Hidden) return;
-      Console.WriteLine(indent + "└─" + file.Name);
-    }
-    
 }
 
 bool IsDirectory(string path) 
@@ -48,7 +40,7 @@ try {
     var file = new FileInfo(root);    
     Console.WriteLine(file.Name);
   }
-  Print(entries, " ", 0);
+  Tree(entries, " ", 0);
 } catch(UnauthorizedAccessException ex) {
   Console.WriteLine(ex.Message);
 }
