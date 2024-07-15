@@ -1,18 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
-
-List<string> marks = ["├", "─", "└", "│"];
+﻿List<string> marks = ["├", "─", "└", "│"];
 
 var root =  Environment.CurrentDirectory;
 
-System.Console.WriteLine("./");
-
-Directory.EnumerateDirectories(root);
-Directory.EnumerateFiles(root);
-
 var entries =  Directory.EnumerateFileSystemEntries(root).ToList();
 
-int startLevel = 2;
+int startLevel = 3;
 void Print(List<string> entries, string indent, int level) {
   if (startLevel == level) return;
   
@@ -20,7 +12,7 @@ void Print(List<string> entries, string indent, int level) {
     var entry = entries[i];
     if (IsDirectory(entry)) {
       var directory = new DirectoryInfo(entry);
-      if ((directory.Attributes  & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
+      if ((directory.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
       Console.Write(indent + "├─" + directory.Name);
       Console.WriteLine();
       Print(Directory.EnumerateFileSystemEntries(entry).ToList(), indent + "│   ", level + 1);
@@ -52,6 +44,13 @@ bool IsDirectory(string path)
 }
 
 try { 
+  if (IsDirectory(root)) {
+    var dir = new DirectoryInfo(root);    
+    Console.WriteLine(dir.Name);
+  } else {
+    var file = new FileInfo(root);    
+    Console.WriteLine(file.Name);
+  }
   Print(entries, " ", 0);
 } catch(UnauthorizedAccessException ex) {
   Console.WriteLine(ex.Message);
