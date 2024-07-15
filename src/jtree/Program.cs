@@ -3,9 +3,9 @@
 var root =  Environment.CurrentDirectory;
 var entries =  Directory.EnumerateFileSystemEntries(root).ToList();
 
-int startLevel = 3;
+int deepLevel = 3;
 void Print(List<string> entries, string indent, int level) {
-  if (startLevel == level) return;
+  if (deepLevel == level) return;
   
   for (var i = 0; i < entries.Count() - 1; i++) {
     var entry = entries[i];
