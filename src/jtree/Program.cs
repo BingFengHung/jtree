@@ -1,7 +1,6 @@
 ﻿List<string> marks = ["├", "─", "└", "│"];
 
 var root =  Environment.CurrentDirectory;
-
 var entries =  Directory.EnumerateFileSystemEntries(root).ToList();
 
 int startLevel = 3;
@@ -13,27 +12,23 @@ void Print(List<string> entries, string indent, int level) {
     if (IsDirectory(entry)) {
       var directory = new DirectoryInfo(entry);
       if ((directory.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
-      Console.Write(indent + "├─" + directory.Name);
-      Console.WriteLine();
+      Console.WriteLine(indent + "├─" + directory.Name);
       Print(Directory.EnumerateFileSystemEntries(entry).ToList(), indent + "│   ", level + 1);
     } else {
       var file = new FileInfo(entry);
       if ((file.Attributes  & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
-      Console.Write(indent + "├─" + file.Name);
-      Console.WriteLine();
+      Console.WriteLine(indent + "├─" + file.Name);
     }
   }
   
   var finalEntry = entries[entries.Count() - 1];
     if (IsDirectory(finalEntry)) {
       var directory = new DirectoryInfo(finalEntry);
-      Console.Write(indent + "└─" + directory.Name);
-      Console.WriteLine();
+      Console.WriteLine(indent + "└─" + directory.Name);
       Print(Directory.EnumerateFileSystemEntries(finalEntry).ToList(), indent + "   ", level + 1);
     } else {
       var file = new FileInfo(finalEntry);
-      Console.Write(indent + "└─" + file.Name);
-      Console.WriteLine();
+      Console.WriteLine(indent + "└─" + file.Name);
     }
     
 }
